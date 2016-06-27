@@ -37,11 +37,11 @@ class Dungeon extends Component {
     let cell = _.random(50, 100);
     maze.push(cell);
     this.generateWalls(cell);
-    while (rooms < 30) {
-      cell = cell + _.random(40, 60);
-      maze.push(cell);
-      this.generateWalls(cell);
-    }
+    // while (rooms < 30) {
+    //   cell = cell + _.random(40, 60);
+    //   maze.push(cell);
+    //   this.generateWalls(cell);
+    // }
   }
 
   generateWalls(cell) {
