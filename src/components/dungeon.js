@@ -1,87 +1,144 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import * as actions from '../actions';
 
 const iheight = 400; //initial dungeon height
 const iwidth = 500; //initial dungeon width
 const heights = [ iheight, 500, 600, 700  ];
 const widths = [ iwidth, 600, 700, 800 ];
-const height = heights[_.random(0, 3)];
-const width = widths[_.random(0, 3)];
+const height = 500;
+const width = 500;
 const cw = 10, ch = 10; // cell width && cell height
 const grid = [ width / cw, height / ch ];
-let floor = [], maze = [], rooms = 0;
 
 class Dungeon extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { floor: [], player: '' };
+  }
+
   componentWillMount() {
-    seedFloor();
-    this.generateTiles();
+    this.floor = _.fill(Array(grid[0] * grid[1]), 1);
+    this.setBoulders(); // Seed Boulders
+    this.setPlayer();
+
+    window.onkeydown = (event) => {
+      let keyCode = event.keyCode;
+
+      switch(keyCode) {
+        case 87: case 38:
+          this.floor[this.state.player] = 1;
+          this.floor[this.state.player - 50] = 3;
+          this.state.player -= 50;
+          this.setState({ floor:  this.floor });
+          return;
+        //move up/w
+        case 83: case 40:
+          this.floor[this.state.player] = 1;
+          this.floor[this.state.player + 50] = 3;
+          this.state.player += 50;
+          this.props.testState({ id: this.state.player, type: 2 });
+          // this.setState({ floor:  this.floor });
+          return;
+        //move down/s
+        case 65: case 37:
+          this.floor[this.state.player] = 1;
+          this.floor[this.state.player - 1] = 3;
+          this.state.player -= 1;
+          this.setState({ floor:  this.floor });;
+          return;
+        //move left/a
+        case 68: case 39:
+          this.floor[this.state.player] = 1;
+          this.floor[this.state.player + 1] = 3;
+          this.state.player += 1;
+          this.setState({ floor:  this.floor });
+          return;
+        //move right/d
+      }
+
+    }
+  }
+
+  componentDidMount() {
+    // console.log(this.state.player);
+    this.floor[this.state.player] = 3;
+    // this.setState({ floor:  this.floor });
   }
 
   renderFloors() {
-    return _.map(floor, i => {
-      return <div className={ i.type + " cell" } id={i.n} key={i.n} style={{ width: cw, height: ch }}></div>
+    return this.state.floor.map((tile, key) => {
+      switch (tile) {
+        case 2:
+          return <div className="cell boulder" key={key}></div>
+        case 3:
+          return <div className="cell player" key={key}></div>
+      }
+        return <div className="cell" key={key}></div>
     });
   }
 
-  renderMaze() {
-    _.map(maze, i => {
-      floor = _.uniqBy(_.concat(floor, [{ n: i, type: "maze"}]), 'n');
-      floor[i - 1] = { n: i, type: "maze"};
-    });
-    rooms++;
+  setPlayer() {
+    // Grab the index of available spaces
+    var availableSpaces = this.floor.map( (i, key) => (i === 1) ? key : undefined).filter(num => typeof(num) !== "undefined");
+
+    var player = _.random(51, 70);
+    this.setState({ player: availableSpaces[player] });
   }
 
-  generateTiles() {
-    // Pick a cell, mark it as part of the maze.
-    let cell = _.random(50, 100);
-    maze.push(cell);
-    this.generateWalls(cell);
-    // while (rooms < 30) {
-    //   cell = cell + _.random(40, 60);
-    //   maze.push(cell);
-    //   this.generateWalls(cell);
-    // }
+  setBoulders() {
+    // pick the first boulder at random
+    let firstBoulder = _.random(1, 150);
+
+    // Give the first boulder a room
+    this.generateRoom(firstBoulder);
+
+    let s = firstBoulder + 350;
+    let d = firstBoulder + 121;
+    let f1 = 0, f2 = 1, i = 1;
+
+    while (i < 10) {
+      i = f1 + f2;
+      f1 = f2;
+      f2 = i;
+      this.generateRoom(s * i);
+      this.generateRoom(d * i);
+      i++;
+    }
+
   }
 
-  generateWalls(cell) {
-    // if the cell is at the right/left edge of the maze or around
-    if ((cell % grid[0]) + 6 >= grid[0]) {
-      //generateWalls to the leftside of the cell
-      let walls = [ cell, cell - 1, cell - 2, cell - 3, cell - 4, cell - 5, cell - 6];
-      maze = _.uniq(maze.concat(walls));
-    }
-    else if ((cell % grid[0]) < 6) {
-      //generateWalls to the rightside of the cell
-      let walls = [ cell, cell + 1, cell + 2, cell + 3, cell + 4, cell + 5, cell + 6];
-      maze = _.uniq(maze.concat(walls));
-    }
-    else {
-      //generateWalls both sides of the cell
-      let walls = [ cell, cell - 1, cell + 1, cell - 2, cell + 2, cell - 3, cell + 3];
-      maze = _.uniq(maze.concat(walls));
-    }
+  generateRoom(cell) {
+      let walls = [ cell, this._padSide("left", cell), this._padSide("right", cell),
+                    cell + grid[0], cell + (grid[0] * 2), cell + (grid[0] * 3), cell + (grid[0] * 4),
+                    this._padSide("left", cell + grid[0]), this._padSide("left", cell + (grid[0] * 2)),
+                    this._padSide("left", cell + (grid[0] * 3)), this._padSide("left", cell + (grid[0] * 4)),
+                    this._padSide("right", cell + grid[0]), this._padSide("right", cell + (grid[0] * 2)),
+                    this._padSide("right", cell + (grid[0] * 3)), this._padSide("right", cell + (grid[0] * 4))
+                    ];
+      _.flatten(walls).map(wall => {
+        if (wall < 0 || wall > this.floor.length || wall % 50 === 0 || wall % 50 === 49 ) {
+          return ;
+        }
+        this.floor[wall] = 2;
+      })
 
-    // console.log("cell alts", walls);
-    if (cell > 0 && cell < grid[0] * 3) {
-      //generateWalls below current cell
-      let walls = [ cell, cell + grid[0], cell + (grid[0] * 2), cell + (grid[0] * 3), cell + (grid[0] * 4) ];
-      maze = _.uniq(maze.concat(walls));
-    }
-    else if (grid[0] * 4 && cell < grid[0] * grid[1]) {
-      //generateWalls above current cell
-      let walls = [ cell, cell - grid[0], cell - (grid[0] * 2), cell - (grid[0] * 3), cell - (grid[0] * 4) ];
-      maze = _.uniq(maze.concat(walls));
-    }
-    else {
-      let walls = [ cell, cell - grid[0], cell + grid[0], cell - (grid[0] * 2), cell + (grid[0] * 2) ];
-      maze = _.uniq(maze.concat(walls));
-    }
+      this.setState({ floor:  this.floor });
+  }
 
-    this.renderMaze();
+  _padSide(position, cell) {
+    switch (position) {
+      case "left":
+        return [cell - 1, cell - 2, cell - 3, cell - 4];
+      case "right":
+        return [cell + 1, cell + 2, cell + 3, cell + 4];
+    }
   }
 
   render() {
+    console.log(this.props.game);
     return (
       <div className="dungeon">
         <div className="floors" style={{ width, height }}>
@@ -92,17 +149,10 @@ class Dungeon extends Component {
   }
 }
 
-function seedFloor() {
-  /* Push exact number of cells to floor i.e fill the floor */
-  for (let i = 1; i <= (width / cw) * (height / ch); i++) {
-    floor.push({ n: i, type: "floor" });
-  }
-}
-
 function mapStateToProps(state) {
   return {
-
+    game: state.game // This is available as this.props.game
   }
 }
 
-export default connect(mapStateToProps)(Dungeon);
+export default connect(mapStateToProps, actions)(Dungeon);
