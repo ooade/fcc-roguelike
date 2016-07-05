@@ -28,7 +28,7 @@ export default class Dungeon extends Component {
     this.setState({ floor: this.floor });
     this.setBoulders(); // Seed Boulders
     this.handleKeys();
-    this.music = new Audio('turnitaround.m4a');
+    this.music = new Audio('/public/music/turnitaround.m4a');
   }
 
   componentDidMount() {
