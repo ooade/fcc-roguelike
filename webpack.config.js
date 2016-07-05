@@ -1,3 +1,8 @@
+var webpack = require('webpack');
+var path = require('path');
+
+var __DEV__ = process.env.NODE_ENV !== 'production';
+
 module.exports = {
   entry: [
     './src/index.js'
@@ -19,5 +24,15 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: './'
-  }
+  },
+  plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(true),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(__DEV__ ? 'development' : 'production')
+      },
+      '__DEVTOOLS__': !__DEV__
+    })
+  ]
 };
