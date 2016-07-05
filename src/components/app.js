@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Dungeon from './dungeon';
 
 let game = {
-  lvl: 1,
-  weapon: "None (Punch & Kick)",
+  level: 1,
+  weapon: "Fist",
   dungeon: 0,
   health: 100,
   xp: 10
@@ -17,31 +17,49 @@ export default class App extends Component {
           <div className="navbar-brand">Simple Dungeon Game</div>
         </nav>
         <div className="container-fluid">
-          <div className="app-desc"><blink>>_ Defeat Aizen Sosuke in dungeon 4</blink></div>
-          <aside className="col-md-3 player-info">
-            <div className="stats-header">>_ Player Stats</div>
+          <div className="app-desc animated lightSpeedIn">>_ Defeat Juha Bach & his co-horts in dungeon 3</div>
+          <div><code className="accessKey-info">`Alt + p` to play and pause music, `Alt + r` to restart Game</code></div>
+          <aside className="col-md-4 player-info">
+            <div className="stats-header">Player: Kurosaki Ichigo</div>
             <div className="stats">
-                <span>Level:</span> {game.lvl}
+                <span>Health Level </span>
+                <span className="game-health">
+                  <div className="progress">
+                    <div style={{ width: game.health + "%"}} className="progress-bar progress-bar-success" />
+                  </div>
+                </span>
             </div>
             <div className="stats">
-                <span>Dungeon:</span> {game.dungeon}
+                <span>Level:</span>
+                <span className="game-level">
+                  {game.level}
+                </span>
             </div>
             <div className="stats">
-                <span>Health:</span> {game.health}
+                <span>Dungeon:</span>
+                <span className="game-dungeon">
+                  {game.dungeon}
+                </span>
             </div>
             <div className="stats">
-                <span>XP:</span> {game.xp}
+                <span>XP:</span>
+                <span className="game-xp">
+                  {game.xp}
+                </span>
             </div>
             <div className="stats">
-                <span>Weapon:</span> {game.weapon}
+                <span>Weapon:</span>
+                <span className="game-weapon">{game.weapon}</span>
             </div>
           </aside>
-          <Dungeon lvl={game.lvl} weapon={game.weapon} />
-
-          <aside className="player-info cmd">
-            <span> Kurosaki@Ichigo-Shinigami-101-A:~$ </span>
-            <input type="text" ref="cmd" autoFocus placeholder="Hint: Type `Start` or hit key `Alt + S` to begin game"/>
-          </aside>
+          <Dungeon data={game}/>
+        </div>
+        <div className="hint">
+          <span className="hint-text"></span>
+          <i className="glyphicon glyphicon-info-sign"/>
+        </div>
+        <div className="my-modal">
+        {/*You were beaten :p*/}
         </div>
       </div>
     );
