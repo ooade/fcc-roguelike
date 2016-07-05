@@ -1,29 +1,37 @@
+@import "variables";
+
 body {
-  font-family: "monospace", cursive;
-  background-color: #333;
-  font-size: 14px; }
+    font-family: "monospace", cursive;
+    background-color: $light-dark;
+    font-size: 14px;
+}
 
 .navbar-brand {
   font-size: 1.1em;
-  color: #fff !important; }
+  color: #fff !important;
+}
 
 .accessKey-info {
-  padding: 0.2em; }
+  padding: 0.2em;
+}
 
 .app-desc {
   color: #fff;
   letter-spacing: 0.15em;
   font-size: 12px;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+}
 
 .progress {
   height: 8px;
   border-radius: 0px;
   margin-top: 5px;
-  margin-bottom: -1px; }
+  margin-bottom: -1px;
+}
 
 .larger-text {
-  font-size: 1.1em; }
+  font-size: 1.1em;
+}
 
 .my-modal {
   position: absolute;
@@ -36,13 +44,15 @@ body {
   display: none;
   padding: 100px;
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.7); }
+  background-color: $overflow-border;
+}
 
 .player-info {
   border: 1px solid green;
-  color: #fff;
+  color:#fff;
   margin-top: 50px;
-  background-color: #111; }
+  background-color: #111;
+}
 
 .stats-header {
   padding: 15px;
@@ -50,67 +60,85 @@ body {
   font-size: 1em;
   text-transform: uppercase;
   font-weight: bold;
-  letter-spacing: 0.08em; }
+  letter-spacing: 0.08em;
+}
 
 .stats {
   padding: 7px;
   border-bottom: 1px dotted green;
-  font-size: 12px; }
-  .stats span:first-child {
+  font-size: 12px;
+
+  span:first-child {
     color: yellow;
     font-weight: bold;
-    letter-spacing: 0.15em; }
-  .stats:last-child {
-    border-bottom: none; }
+    letter-spacing: 0.15em;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
 
 .dungeon {
   margin-top: 3em;
-  border: 10px solid rgba(0, 0, 0, 0.7);
+  border: 10px solid $overflow-border;
   border-radius: 5px;
   height: 300px;
   width: 400px;
   margin-left: auto;
   margin-right: auto;
-  overflow: hidden; }
+  overflow: hidden;
+}
 
 .weapon {
-  background-color: yellow !important; }
+  background-color: $weapon;
+}
 
 .right-floor {
-  margin-left: -120px; }
+  margin-left: -120px;
+}
 
 .left-floor {
-  margin-left: 0px; }
+  margin-left: 0px;
+}
 
 .top-floor {
-  margin-top: 0px; }
+  margin-top: 0px;
+}
 
 .down-floor {
-  margin-top: -220px; }
+  margin-top: -220px;
+}
 
 .cell {
   float: left;
   width: 10px;
   height: 10px;
   background-color: #fff;
-  transition: .2s; }
+  transition: .2s;
+}
 
 .boulder {
-  background-color: #111; }
+  background-color: $boulder;
+}
 
 .player {
-  background-color: blue;
+  background-color: $player;
   border-radius: 100;
-  transition: .2s; }
+  transition: .2s;
+}
 
 .enemy {
-  background-color: red; }
+  background-color: $enemy;
+}
 
 .health {
-  background-color: green; }
+  background-color: $health;
+}
 
 .new-dungeon {
-  background-color: purple; }
+  background-color: purple;
+}
 
 .hint {
   background-color: #308e4b;
@@ -121,29 +149,41 @@ body {
   right: 2em;
   color: #fff;
   opacity: 0.7;
-  cursor: help; }
-  .hint i {
+  cursor: help;
+
+  i {
     float: left;
-    margin-right: 1em; }
-  .hint:hover {
-    opacity: 1; }
+    margin-right: 1em;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
 
 .control-tabs {
-  display: none; }
+  display: none;
+}
 
 @media screen and (max-width: 992px) {
   .app-desc {
-    text-align: center; }
+    text-align: center;
+  }
   .player-info {
     width: 400px;
     margin-left: auto;
-    margin-right: auto; }
-  .hint {
+    margin-right: auto;
+  }
+.hint {
     background-color: #308e4b;
     padding: 1em;
     position: fixed;
     width: 120px;
     top: 6.5em;
-    right: 1em; }
-    .hint i {
-      display: none; } }
+    right: 1em;
+
+    i {
+      display: none;
+    }
+  }
+}
