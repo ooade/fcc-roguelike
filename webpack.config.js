@@ -7,6 +7,7 @@ module.exports = {
   entry: [
     './src/index.js'
   ],
+  devtool: 'cheap-module-source-map',
   output: {
     path: __dirname,
     publicPath: '/',
