@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "FCC Roguelike Game",
   "main": "index.js",
-  "repository": "git@github.com:marhyorh/fcc-roguelike.git",
+  "repository": "git@github.com:ooade/fcc-roguelike.git",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js"
+    "dev": "parcel index.html NODE_ENV=development",
+    "build": "parcel build index.html --public-url /"
   },
   "author": "Adegbuyi Ademola",
   "license": "ISC",
@@ -16,9 +17,8 @@
     "babel-preset-react": "^6.1.18",
     "gulp": "^3.9.1",
     "gulp-sass": "^2.3.2",
-    "react-addons-test-utils": "^0.14.7",
-    "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.0"
+    "parcel-bundler": "^1.6.1",
+    "react-addons-test-utils": "^0.14.7"
   },
   "dependencies": {
     "babel-preset-stage-1": "^6.1.18",

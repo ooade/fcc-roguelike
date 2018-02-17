@@ -8,7 +8,7 @@ const sass = require('gulp-sass');
 gulp.task('sass', () => {
   return gulp.src('./sass/**/*.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('./style'));
+    .pipe(gulp.dest('./public/css'));
 });
 
 /** Adds a task "sass:watch" **/
